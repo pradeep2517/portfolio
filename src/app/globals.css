@@ -1,0 +1,327 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #121212;
+  --foreground: #ffffff;
+  --panel-gray: #1e1e1e;
+  --panel-dark: #121212;
+  --text-muted: #a1a1aa;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #121212;
+}
+
+body {
+  color: var(--foreground);
+  background-color: #121212;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #121212;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #444444;
+}
+
+/* Diagonal Split Polygon */
+.hero-slant {
+  clip-path: polygon(0 0, 100% 0, 78% 100%, 0% 100%);
+}
+
+@media (max-width: 1024px) {
+  .hero-slant {
+    clip-path: none;
+  }
+}
+
+/* Embossed Neumorphic Tiles */
+.embossed-tile {
+  background: #d4d4d4;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.22), -2px -2px 5px rgba(255, 255, 255, 0.85);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.embossed-tile:hover {
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3), -1px -1px 2px rgba(255, 255, 255, 0.95);
+  transform: translateY(1px);
+}
+
+.dark-embossed-tile {
+  background: #181818;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5), -1px -1px 3px rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.dark-embossed-tile:hover {
+  background: #222222;
+  transform: translateY(1px);
+}
+
+/* Capsule Pill Buttons */
+.pill-button-white {
+  background: #ffffff;
+  color: #000000;
+  border-radius: 9999px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
+}
+
+.pill-button-white:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+}
+
+.pill-button-dark {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #333333;
+  border-radius: 9999px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pill-button-dark:hover {
+  background: #171717;
+  border-color: #777777;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Luxury Split Theme & Laser Utilities */
+.split-card-light {
+  background: #dcdcdc;
+  color: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.split-card-dark {
+  background: linear-gradient(180deg, #121212 0%, #0a0a0a 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+}
+
+.split-card-dark:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 20px 45px -10px rgba(56, 189, 248, 0.15);
+}
+
+.laser-border-glow {
+  position: relative;
+}
+
+.laser-border-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(56, 189, 248, 0.8), rgba(168, 85, 247, 0.7), transparent 70%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.section-badge-header {
+  border: 2px solid #ffffff;
+  padding: 0.5rem 2rem;
+  font-size: 0.875rem;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  background: #000000;
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.section-badge-header:hover {
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.35);
+  border-color: #38bdf8;
+}
+
+/* Hero Text Keyframes & Utilities */
+@keyframes wave {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(14deg); }
+  20% { transform: rotate(-8deg); }
+  30% { transform: rotate(14deg); }
+  40% { transform: rotate(-4deg); }
+  50% { transform: rotate(10deg); }
+  60% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.animate-wave {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: wave 2.2s infinite ease-in-out;
+}
+
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-cursor-blink {
+  animation: blinkCursor 0.85s steps(2, start) infinite;
+}
+
+@keyframes textShimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #000000 0%,
+    #222222 25%,
+    #666666 50%,
+    #222222 75%,
+    #000000 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: textShimmer 6s linear infinite;
+}
+
+@keyframes heroFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: heroFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Floating Portrait Badges & Glow */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+@keyframes floatBadge1 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(-1.5deg); }
+}
+
+@keyframes floatBadge2 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1.5deg); }
+}
+
+@keyframes floatBadge3 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(-1deg); }
+}
+
+.animate-float-badge-1 {
+  animation: floatBadge1 4.5s ease-in-out infinite;
+}
+
+.animate-float-badge-2 {
+  animation: floatBadge2 5.5s ease-in-out infinite 0.7s;
+}
+
+.animate-float-badge-3 {
+  animation: floatBadge3 4.8s ease-in-out infinite 1.4s;
+}
+
+/* Biometric Laser Scanline */
+@keyframes scanLine {
+  0% {
+    top: 5%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.85;
+  }
+  100% {
+    top: 92%;
+    opacity: 0;
+  }
+}
+
+.animate-scan-line {
+  animation: scanLine 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Diagonal Slant Beam Pulse */
+@keyframes diagonalGlow {
+  0%, 100% {
+    opacity: 0.35;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    opacity: 0.9;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.7), 0 0 45px rgba(255, 255, 255, 0.4);
+  }
+}
+.animate-diagonal-glow {
+  animation: diagonalGlow 4s ease-in-out infinite;
+}
+
+/* Luxurious Cinematic Narrative Fade */
+@keyframes cinematicFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-cinematic-fade {
+  animation: cinematicFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

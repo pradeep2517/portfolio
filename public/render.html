@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #121212; overflow: hidden; width: 1280px; height: 720px; }
+  canvas { width: 1280px; height: 720px; display: block; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<script>
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const width = 1280;
+  const height = 720;
+
+  // Generate 3D vertices for geodesic sphere
+  const nodes = [];
+  const count = 130;
+  for (let i = 0; i < count; i++) {
+    const phi = Math.acos(-1 + (2 * i) / count);
+    const theta = Math.sqrt(count * Math.PI) * phi;
+    const r = 240;
+    nodes.push({
+      x: r * Math.cos(theta) * Math.sin(phi),
+      y: r * Math.sin(theta) * Math.sin(phi),
+      z: r * Math.cos(phi),
+      origR: r
+    });
+  }
+
+  window.renderFrame = function(frameIndex, totalFrames) {
+    const progress = frameIndex / (totalFrames - 1);
+    ctx.fillStyle = '#121212';
+    ctx.fillRect(0, 0, width, height);
+
+    // Subtle atmospheric dark gradient
+    const grad = ctx.createRadialGradient(width/2, height/2, 40, width/2, height/2, 600);
+    grad.addColorStop(0, 'rgba(56, 189, 248, 0.12)');
+    grad.addColorStop(0.4, 'rgba(168, 85, 247, 0.06)');
+    grad.addColorStop(1, 'rgba(18, 18, 18, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, width, height);
+
+    // Dynamic rotation angles based on progress
+    const angleY = progress * Math.PI * 2.5;
+    const angleX = Math.sin(progress * Math.PI) * 0.7;
+    const zoom = 1 + Math.sin(progress * Math.PI) * 0.4;
+
+    // Projected nodes
+    const projected = nodes.map(n => {
+      let y1 = n.y * Math.cos(angleX) - n.z * Math.sin(angleX);
+      let z1 = n.y * Math.sin(angleX) + n.z * Math.cos(angleX);
+      let x2 = n.x * Math.cos(angleY) + z1 * Math.sin(angleY);
+      let z2 = -n.x * Math.sin(angleY) + z1 * Math.cos(angleY);
+
+      const morph = 1 + 0.14 * Math.sin(progress * 10 + n.origR);
+      x2 *= morph * zoom;
+      y1 *= morph * zoom;
+      z2 *= morph * zoom;
+
+      const fov = 750;
+      const scale = fov / (fov + z2 + 320);
+      return {
+        x: width / 2 + x2 * scale,
+        y: height / 2 + y1 * scale,
+        z: z2,
+        scale: scale,
+        alpha: Math.max(0.12, (z2 + 320) / 640)
+      };
+    });
+
+    // Draw connecting laser wireframe lines
+    ctx.lineWidth = 1.2;
+    for (let i = 0; i < projected.length; i++) {
+      for (let j = i + 1; j < projected.length; j++) {
+        const p1 = projected[i];
+        const p2 = projected[j];
+        const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+        if (dist < 90) {
+          const alpha = (1 - dist / 90) * Math.min(p1.alpha, p2.alpha) * 0.7;
+          ctx.strokeStyle = progress > 0.45 
+            ? `rgba(168, 85, 247, ${alpha})` 
+            : `rgba(56, 189, 248, ${alpha})`;
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw glowing nodes
+    projected.forEach(p => {
+      const radius = Math.max(1.8, 3.5 * p.scale);
+      ctx.fillStyle = p.z > 0 ? '#38bdf8' : '#a855f7';
+      ctx.globalAlpha = p.alpha;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (p.z > 70) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, radius * 0.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+    ctx.globalAlpha = 1.0;
+
+    return canvas.toDataURL('image/webp', 0.85);
+  };
+  window.isReady = true;
+</script>
+</body>
+</html>
