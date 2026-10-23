@@ -66,7 +66,7 @@ export const ContactSection: React.FC = () => {
       }
 
       setIsSubmitted(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       clearTimeout(timeoutId);
       console.warn("Direct transmission status:", err);
       // Ensure sender receives immediate positive confirmation

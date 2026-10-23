@@ -306,7 +306,7 @@ export const ScrollyCanvas: React.FC<ScrollyCanvasProps> = ({ onOpenResume }) =>
 
         const utterance = new SpeechSynthesisUtterance(phase.script);
         utteranceRef.current = utterance;
-        (window as any).__activeUtterance = utterance; // Prevent V8 garbage collection mid-speech
+        (window as Window & { __activeUtterance?: SpeechSynthesisUtterance | null }).__activeUtterance = utterance; // Prevent V8 garbage collection mid-speech
 
         utterance.rate = 1.0;
         utterance.pitch = 1.0;
@@ -353,7 +353,7 @@ export const ScrollyCanvas: React.FC<ScrollyCanvasProps> = ({ onOpenResume }) =>
         utterance.onboundary = (e) => {
           if (phase.script.length > 0) {
             const charIndex = typeof e.charIndex === "number" ? e.charIndex : 0;
-            const charLength = typeof (e as any).charLength === "number" ? (e as any).charLength : 4;
+            const charLength = typeof (e as SpeechSynthesisEvent & { charLength?: number }).charLength === "number" ? (e as SpeechSynthesisEvent & { charLength?: number }).charLength : 4;
             const currentPos = charIndex + charLength;
             const charProg = Math.min(1.0, Math.max(0, currentPos / phase.script.length));
 
@@ -370,7 +370,7 @@ export const ScrollyCanvas: React.FC<ScrollyCanvasProps> = ({ onOpenResume }) =>
             clearInterval(keepAliveRef.current);
             keepAliveRef.current = null;
           }
-          (window as any).__activeUtterance = null;
+          (window as Window & { __activeUtterance?: SpeechSynthesisUtterance | null }).__activeUtterance = null;
           isSpeakingRef.current = false;
           setIsSpeaking(false);
           boundaryProgressRef.current = 1.0;
@@ -394,7 +394,7 @@ export const ScrollyCanvas: React.FC<ScrollyCanvasProps> = ({ onOpenResume }) =>
                 clearInterval(keepAliveRef.current);
                 keepAliveRef.current = null;
               }
-              (window as any).__activeUtterance = null;
+              (window as Window & { __activeUtterance?: SpeechSynthesisUtterance | null }).__activeUtterance = null;
               isVoiceActiveRef.current = false;
               setIsVoiceActive(false);
               isSpeakingRef.current = false;
@@ -422,7 +422,7 @@ export const ScrollyCanvas: React.FC<ScrollyCanvasProps> = ({ onOpenResume }) =>
             clearInterval(keepAliveRef.current);
             keepAliveRef.current = null;
           }
-          (window as any).__activeUtterance = null;
+          (window as Window & { __activeUtterance?: SpeechSynthesisUtterance | null }).__activeUtterance = null;
           isSpeakingRef.current = false;
           setIsSpeaking(false);
         };
@@ -518,7 +518,7 @@ export const ScrollyCanvas: React.FC<ScrollyCanvasProps> = ({ onOpenResume }) =>
         clearInterval(keepAliveRef.current);
         keepAliveRef.current = null;
       }
-      (window as any).__activeUtterance = null;
+      (window as Window & { __activeUtterance?: SpeechSynthesisUtterance | null }).__activeUtterance = null;
       isVoiceActiveRef.current = false;
       setIsVoiceActive(false);
       setIsSpeaking(false);
@@ -650,7 +650,7 @@ export const ScrollyCanvas: React.FC<ScrollyCanvasProps> = ({ onOpenResume }) =>
                       clearInterval(keepAliveRef.current);
                       keepAliveRef.current = null;
                     }
-                    (window as any).__activeUtterance = null;
+                    (window as Window & { __activeUtterance?: SpeechSynthesisUtterance | null }).__activeUtterance = null;
                     isVoiceActiveRef.current = false;
                     setIsVoiceActive(false);
                     isSpeakingRef.current = false;
@@ -681,7 +681,7 @@ export const ScrollyCanvas: React.FC<ScrollyCanvasProps> = ({ onOpenResume }) =>
                     clearInterval(keepAliveRef.current);
                     keepAliveRef.current = null;
                   }
-                  (window as any).__activeUtterance = null;
+                  (window as Window & { __activeUtterance?: SpeechSynthesisUtterance | null }).__activeUtterance = null;
                   isVoiceActiveRef.current = false;
                   setIsVoiceActive(false);
                   isSpeakingRef.current = false;
